@@ -1,0 +1,11 @@
+COMMAND: node C:\Users\PDulg\Documents\Codex\2026-10-05\do-x20\work\node_modules\@redocly\cli\bin\cli.js lint docs/openapi/openapi.yaml docs/openapi/corgly.yaml --config redocly.yaml
+EXIT CODE: 0
+
+validating docs\openapi\openapi.yaml...
+docs\openapi\openapi.yaml: validated in 98ms
+
+validating docs\openapi\corgly.yaml...
+docs\openapi\corgly.yaml: validated in 48ms
+
+Woohoo! Your API descriptions are valid. 🎉
+

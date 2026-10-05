@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Sprint 05 | Swagger Sandbox</title>
+        <link rel="stylesheet" href="swagger-ui.css">
+    </head>
+    <body>
+        <div style="padding:12px;font:16px sans-serif">
+            <p>
+                Sprint 05 local sandbox · Bearer token: <code>sprint05-local-sandbox</code> · No Google calls.
+                <a href="../redoc.html">Assistant Redoc</a> ·
+                <a href="../corgly-redoc.html">Corg.ly Redoc</a>
+            </p>
+            <label for="api-choice">API specification: </label>
+            <select id="api-choice" onchange="loadSpec(this.value)">
+                <option value="../openapi.yaml">Personal Voice AI Assistant</option>
+                <option value="../corgly.yaml">Corg.ly UE-5</option>
+            </select>
+        </div>
+        <div id="swagger-ui"></div>
+        <script src="swagger-ui-bundle.js"></script>
+        <script>
+            function loadSpec(url) {
+                SwaggerUIBundle({
+                    url,
+                    dom_id: '#swagger-ui',
+                    deepLinking: true,
+                    filter: true,
+                    presets: [SwaggerUIBundle.presets.apis],
+                    layout: 'BaseLayout'
+                });
+            }
+            loadSpec('../openapi.yaml');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,1014 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Corg.ly Onboarding API - UE-5",
+    "version": "1.0.0",
+    "description": "Sprint 05 executable LOCAL SANDBOX contract. Responses are simulated, not Google or production Corg.ly evidence. Use bearer token sprint05-local-sandbox.",
+    "contact": {
+      "name": "Sprint 05 maintainer",
+      "url": "https://example.org/sprint05"
+    }
+  },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "Same-origin sandbox; run python server.py"
+    }
+  ],
+  "security": [
+    {
+      "SandboxBearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Pets",
+      "description": "Pets operations in the local lab sandbox."
+    },
+    {
+      "name": "Audio",
+      "description": "Audio operations in the local lab sandbox."
+    },
+    {
+      "name": "Webhooks",
+      "description": "Webhooks operations in the local lab sandbox."
+    }
+  ],
+  "paths": {
+    "/pets/upload-photo": {
+      "post": {
+        "summary": "Upload a pet PNG photograph",
+        "description": "Upload a pet PNG photograph. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites.",
+        "operationId": "uploadPhoto",
+        "tags": [
+          "Pets"
+        ],
+        "parameters": [
+          {
+            "name": "X-Sandbox-Failure",
+            "in": "header",
+            "required": false,
+            "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "403",
+                "500",
+                "503"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PhotoRequest"
+              },
+              "example": {
+                "pet_id": "corgi_98231",
+                "photo": "assets/einstein.png"
+              },
+              "encoding": {
+                "photo": {
+                  "contentType": "image/png"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoResponse"
+                },
+                "example": {
+                  "pet_id": "corgi_98231",
+                  "photo_id": "photo_0001",
+                  "filename": "einstein.png",
+                  "bytes_received": 68
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or invalid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Malformed or invalid request.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_400",
+                    "message": "Malformed or invalid request."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid sandbox bearer token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Missing or invalid sandbox bearer token.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_401",
+                    "message": "Missing or invalid sandbox bearer token."
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sandbox provider permission is unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox provider permission is unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_403",
+                    "message": "Sandbox provider permission is unavailable."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource or session action not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Resource or session action not found.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_404",
+                    "message": "Resource or session action not found."
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Action version or confirmation conflicts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Action version or confirmation conflicts.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_409",
+                    "message": "Action version or confirmation conflicts."
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds 2 MiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Request exceeds 2 MiB.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_413",
+                    "message": "Request exceeds 2 MiB."
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unsupported content type.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_415",
+                    "message": "Unsupported content type."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected internal sandbox error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unexpected internal sandbox error.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_500",
+                    "message": "Unexpected internal sandbox error."
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Sandbox dependency unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox dependency unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_503",
+                    "message": "Sandbox dependency unavailable."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "upload_photo.py",
+            "source": "\"\"\"Upload the included Einstein image fixture as multipart form data.\nRun server.py first; this sample uses its documented sandbox token.\n\"\"\"\nfrom pathlib import Path\nfrom client import multipart_file, post\n\nphoto_path = Path(__file__).resolve().parents[1] / \"assets\" / \"einstein.png\"\nphoto_body, photo_content_type = multipart_file(\n    \"photo\", photo_path, \"image/png\", {\"pet_id\": \"corgi_98231\"})\npost(\"/pets/upload-photo\", body=photo_body, content_type=photo_content_type)\n"
+          }
+        ]
+      }
+    },
+    "/audio/translate-bark": {
+      "post": {
+        "summary": "Translate a bark in the deterministic sandbox",
+        "description": "Translate a bark in the deterministic sandbox. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites.",
+        "operationId": "translateBark",
+        "tags": [
+          "Audio"
+        ],
+        "parameters": [
+          {
+            "name": "X-Sandbox-Failure",
+            "in": "header",
+            "required": false,
+            "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "403",
+                "500",
+                "503"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AudioRequest"
+              },
+              "example": {
+                "pet_id": "corgi_98231",
+                "audio": "assets/einstein-bark.wav"
+              },
+              "encoding": {
+                "audio": {
+                  "contentType": "audio/wav"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BarkResponse"
+                },
+                "example": {
+                  "pet_id": "corgi_98231",
+                  "meaning": "I want to play.",
+                  "confidence": 0.92,
+                  "simulated": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or invalid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Malformed or invalid request.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_400",
+                    "message": "Malformed or invalid request."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid sandbox bearer token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Missing or invalid sandbox bearer token.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_401",
+                    "message": "Missing or invalid sandbox bearer token."
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sandbox provider permission is unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox provider permission is unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_403",
+                    "message": "Sandbox provider permission is unavailable."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource or session action not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Resource or session action not found.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_404",
+                    "message": "Resource or session action not found."
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Action version or confirmation conflicts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Action version or confirmation conflicts.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_409",
+                    "message": "Action version or confirmation conflicts."
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds 2 MiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Request exceeds 2 MiB.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_413",
+                    "message": "Request exceeds 2 MiB."
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unsupported content type.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_415",
+                    "message": "Unsupported content type."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected internal sandbox error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unexpected internal sandbox error.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_500",
+                    "message": "Unexpected internal sandbox error."
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Sandbox dependency unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox dependency unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_503",
+                    "message": "Sandbox dependency unavailable."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "translate_bark.py",
+            "source": "\"\"\"Submit the included synthetic WAV fixture to the bark-translation sandbox.\nThe returned meaning is a deterministic demonstration, not real audio inference.\n\"\"\"\nfrom pathlib import Path\nfrom client import multipart_file, post\n\naudio_path = Path(__file__).resolve().parents[1] / \"assets\" / \"einstein-bark.wav\"\naudio_body, audio_content_type = multipart_file(\n    \"audio\", audio_path, \"audio/wav\", {\"pet_id\": \"corgi_98231\"})\npost(\"/audio/translate-bark\", body=audio_body, content_type=audio_content_type)\n"
+          }
+        ]
+      }
+    },
+    "/webhooks/subscribe": {
+      "post": {
+        "summary": "Register a pet activity callback",
+        "description": "Register a pet activity callback. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites.",
+        "operationId": "subscribeWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "parameters": [
+          {
+            "name": "X-Sandbox-Failure",
+            "in": "header",
+            "required": false,
+            "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "403",
+                "500",
+                "503"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequest"
+              },
+              "example": {
+                "pet_id": "corgi_98231",
+                "callback_url": "https://example.org/corgly/pet-activity",
+                "events": [
+                  "pet.activity.detected"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionResponse"
+                },
+                "example": {
+                  "subscription_id": "subscription_0001",
+                  "pet_id": "corgi_98231",
+                  "callback_url": "https://example.org/corgly/pet-activity",
+                  "events": [
+                    "pet.activity.detected"
+                  ],
+                  "status": "active"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or invalid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Malformed or invalid request.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_400",
+                    "message": "Malformed or invalid request."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid sandbox bearer token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Missing or invalid sandbox bearer token.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_401",
+                    "message": "Missing or invalid sandbox bearer token."
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sandbox provider permission is unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox provider permission is unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_403",
+                    "message": "Sandbox provider permission is unavailable."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource or session action not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Resource or session action not found.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_404",
+                    "message": "Resource or session action not found."
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Action version or confirmation conflicts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Action version or confirmation conflicts.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_409",
+                    "message": "Action version or confirmation conflicts."
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds 2 MiB.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Request exceeds 2 MiB.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_413",
+                    "message": "Request exceeds 2 MiB."
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported content type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unsupported content type.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_415",
+                    "message": "Unsupported content type."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected internal sandbox error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Unexpected internal sandbox error.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_500",
+                    "message": "Unexpected internal sandbox error."
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Sandbox dependency unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "user_message": "Sandbox dependency unavailable.",
+                  "correlation_id": "corr_sandbox_0001",
+                  "error": {
+                    "code": "http_503",
+                    "message": "Sandbox dependency unavailable."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "subscribe_webhook.py",
+            "source": "\"\"\"Register an illustrative HTTPS callback for pet activity notifications.\nThe sandbox records the subscription but never sends outbound callbacks.\n\"\"\"\nfrom client import post\n\nsubscription = {\n    \"pet_id\": \"corgi_98231\",\n    \"callback_url\": \"https://example.org/corgly/pet-activity\",\n    \"events\": [\"pet.activity.detected\"],\n}\npost(\"/webhooks/subscribe\", subscription)\n"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SandboxBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Opaque sandbox token: sprint05-local-sandbox. Not a JWT. Production requires a verified app session; provider OAuth tokens remain server-side."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "user_message",
+          "correlation_id",
+          "error"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "succeeded"
+          },
+          "user_message": {
+            "type": "string",
+            "example": "Sandbox operation completed."
+          },
+          "correlation_id": {
+            "type": "string",
+            "example": "corr_sandbox_0001"
+          },
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "invalid_request"
+              },
+              "message": {
+                "type": "string",
+                "example": "Review the request fields."
+              }
+            }
+          }
+        }
+      },
+      "PhotoRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pet_id",
+          "photo"
+        ],
+        "properties": {
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary",
+            "description": "PNG file, e.g. assets/einstein.png."
+          }
+        },
+        "example": {
+          "pet_id": "corgi_98231",
+          "photo": "assets/einstein.png"
+        }
+      },
+      "AudioRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pet_id",
+          "audio"
+        ],
+        "properties": {
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "audio": {
+            "type": "string",
+            "format": "binary",
+            "description": "WAV file, e.g. assets/einstein-bark.wav."
+          }
+        },
+        "example": {
+          "pet_id": "corgi_98231",
+          "audio": "assets/einstein-bark.wav"
+        }
+      },
+      "SubscriptionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pet_id",
+          "callback_url",
+          "events"
+        ],
+        "properties": {
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "callback_url": {
+            "type": "string",
+            "example": "https://example.org/corgly/pet-activity",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "pet.activity.detected"
+              ]
+            }
+          }
+        },
+        "example": {
+          "pet_id": "corgi_98231",
+          "callback_url": "https://example.org/corgly/pet-activity",
+          "events": [
+            "pet.activity.detected"
+          ]
+        }
+      },
+      "PhotoResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pet_id",
+          "photo_id",
+          "filename",
+          "bytes_received"
+        ],
+        "properties": {
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "photo_id": {
+            "type": "string",
+            "example": "photo_0001"
+          },
+          "filename": {
+            "type": "string",
+            "example": "einstein.png"
+          },
+          "bytes_received": {
+            "type": "integer",
+            "example": 68
+          }
+        },
+        "example": {
+          "pet_id": "corgi_98231",
+          "photo_id": "photo_0001",
+          "filename": "einstein.png",
+          "bytes_received": 68
+        }
+      },
+      "BarkResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pet_id",
+          "meaning",
+          "confidence",
+          "simulated"
+        ],
+        "properties": {
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "meaning": {
+            "type": "string",
+            "example": "I want to play."
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.92
+          },
+          "simulated": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "example": {
+          "pet_id": "corgi_98231",
+          "meaning": "I want to play.",
+          "confidence": 0.92,
+          "simulated": true
+        }
+      },
+      "SubscriptionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subscription_id",
+          "pet_id",
+          "callback_url",
+          "events",
+          "status"
+        ],
+        "properties": {
+          "subscription_id": {
+            "type": "string",
+            "example": "subscription_0001"
+          },
+          "pet_id": {
+            "type": "string",
+            "example": "corgi_98231"
+          },
+          "callback_url": {
+            "type": "string",
+            "example": "https://example.org/corgly/pet-activity",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string",
+            "example": "active"
+          }
+        },
+        "example": {
+          "subscription_id": "subscription_0001",
+          "pet_id": "corgi_98231",
+          "callback_url": "https://example.org/corgly/pet-activity",
+          "events": [
+            "pet.activity.detected"
+          ],
+          "status": "active"
+        }
+      }
+    }
+  }
+}

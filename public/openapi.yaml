@@ -1,0 +1,1188 @@
+"openapi": "3.0.3"
+"info":
+  "title": "Personal Voice AI Assistant API"
+  "version": "1.0.0"
+  "description": "Sprint 05 executable LOCAL SANDBOX contract. Responses are simulated, not Google or production Corg.ly evidence. Use bearer token sprint05-local-sandbox."
+  "contact":
+    "name": "Sprint 05 maintainer"
+    "url": "https://example.org/sprint05"
+"servers":
+  -
+    "url": "/v1"
+    "description": "Same-origin sandbox; run python server.py"
+"security":
+  -
+    "SandboxBearer": []
+"tags":
+  -
+    "name": "Commands"
+    "description": "Commands operations in the local lab sandbox."
+  -
+    "name": "Actions"
+    "description": "Actions operations in the local lab sandbox."
+  -
+    "name": "Contacts"
+    "description": "Contacts operations in the local lab sandbox."
+  -
+    "name": "History"
+    "description": "History operations in the local lab sandbox."
+"paths":
+  "/commands":
+    "post":
+      "summary": "Propose a reviewed Calendar action"
+      "description": "Propose a reviewed Calendar action. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites."
+      "operationId": "createCommand"
+      "tags":
+        - "Commands"
+      "parameters":
+        -
+          "name": "X-Sandbox-Failure"
+          "in": "header"
+          "required": false
+          "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients."
+          "schema":
+            "type": "string"
+            "enum":
+              - "403"
+              - "500"
+              - "503"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/CommandRequest"
+            "example":
+              "session_id": "session_anu_01"
+              "transcript": "Schedule the Sprint 05 review on 6 October at 10 AM."
+              "intent": "calendar.create"
+              "event":
+                "title": "Sprint 05 review"
+                "start": "2026-10-06T10:00:00+08:00"
+                "end": "2026-10-06T10:30:00+08:00"
+                "timezone": "Asia/Ulaanbaatar"
+      "responses":
+        "200":
+          "description": "Successful operation."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/CommandResponse"
+              "example":
+                "status": "proposed"
+                "user_message": "Review this action before confirming."
+                "correlation_id": "corr_sandbox_0001"
+                "transcript": "Schedule the Sprint 05 review on 6 October at 10 AM."
+                "intent": "calendar.create"
+                "action_id": "action_0001"
+                "payload_version": 1
+                "required_fields": []
+                "event":
+                  "title": "Sprint 05 review"
+                  "start": "2026-10-06T10:00:00+08:00"
+                  "end": "2026-10-06T10:30:00+08:00"
+                  "timezone": "Asia/Ulaanbaatar"
+        "400":
+          "description": "Malformed or invalid request."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Malformed or invalid request."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_400"
+                  "message": "Malformed or invalid request."
+        "401":
+          "description": "Missing or invalid sandbox bearer token."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Missing or invalid sandbox bearer token."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_401"
+                  "message": "Missing or invalid sandbox bearer token."
+        "403":
+          "description": "Sandbox provider permission is unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox provider permission is unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_403"
+                  "message": "Sandbox provider permission is unavailable."
+        "404":
+          "description": "Resource or session action not found."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Resource or session action not found."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_404"
+                  "message": "Resource or session action not found."
+        "409":
+          "description": "Action version or confirmation conflicts."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Action version or confirmation conflicts."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_409"
+                  "message": "Action version or confirmation conflicts."
+        "413":
+          "description": "Request exceeds 2 MiB."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Request exceeds 2 MiB."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_413"
+                  "message": "Request exceeds 2 MiB."
+        "415":
+          "description": "Unsupported content type."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unsupported content type."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_415"
+                  "message": "Unsupported content type."
+        "500":
+          "description": "Unexpected internal sandbox error."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unexpected internal sandbox error."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_500"
+                  "message": "Unexpected internal sandbox error."
+        "503":
+          "description": "Sandbox dependency unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox dependency unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_503"
+                  "message": "Sandbox dependency unavailable."
+      "x-codeSamples":
+        -
+          "lang": "Python"
+          "label": "assistant_workflow.py"
+          "source": "\"\"\"Propose, review-confirm and simulate one Calendar action, then read history.\nThis fixture is pre-reviewed for the automated demo; a real UI must ask the user.\n\"\"\"\nfrom client import post\n\ncommand = {\n    \"session_id\": \"session_anu_01\",\n    \"transcript\": \"Schedule the Sprint 05 review on 6 October at 10 AM.\",\n    \"intent\": \"calendar.create\",\n    \"event\": {\"title\": \"Sprint 05 review\", \"start\": \"2026-10-06T10:00:00+08:00\",\n              \"end\": \"2026-10-06T10:30:00+08:00\", \"timezone\": \"Asia/Ulaanbaatar\"},\n}\nproposal = post(\"/commands\", command)\naction_id = proposal[\"action_id\"]\nconfirmation = {\"session_id\": \"session_anu_01\", \"payload_version\": proposal[\"payload_version\"]}\npost(f\"/actions/{action_id}/confirm\", confirmation)\npost(f\"/actions/{action_id}/execute\", confirmation)\npost(\"/contacts/search\", {\"query\": \"Anu\"})\npost(\"/sessions/history\", {\"session_id\": \"session_anu_01\"})\n"
+  "/actions/{id}/confirm":
+    "post":
+      "summary": "Confirm the exact action version"
+      "description": "Confirm the exact action version. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites."
+      "operationId": "confirmAction"
+      "tags":
+        - "Actions"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "description": "Action identifier returned by POST /commands."
+          "schema":
+            "type": "string"
+            "example": "action_0001"
+        -
+          "name": "X-Sandbox-Failure"
+          "in": "header"
+          "required": false
+          "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients."
+          "schema":
+            "type": "string"
+            "enum":
+              - "403"
+              - "500"
+              - "503"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/VersionRequest"
+            "example":
+              "session_id": "session_anu_01"
+              "payload_version": 1
+      "responses":
+        "200":
+          "description": "Successful operation."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/ActionResponse"
+              "example":
+                "status": "confirmed"
+                "user_message": "Sandbox action confirmed."
+                "correlation_id": "corr_sandbox_0002"
+                "action_id": "action_0001"
+                "payload_version": 1
+                "provider_resource_id": ""
+        "400":
+          "description": "Malformed or invalid request."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Malformed or invalid request."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_400"
+                  "message": "Malformed or invalid request."
+        "401":
+          "description": "Missing or invalid sandbox bearer token."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Missing or invalid sandbox bearer token."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_401"
+                  "message": "Missing or invalid sandbox bearer token."
+        "403":
+          "description": "Sandbox provider permission is unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox provider permission is unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_403"
+                  "message": "Sandbox provider permission is unavailable."
+        "404":
+          "description": "Resource or session action not found."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Resource or session action not found."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_404"
+                  "message": "Resource or session action not found."
+        "409":
+          "description": "Action version or confirmation conflicts."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Action version or confirmation conflicts."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_409"
+                  "message": "Action version or confirmation conflicts."
+        "413":
+          "description": "Request exceeds 2 MiB."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Request exceeds 2 MiB."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_413"
+                  "message": "Request exceeds 2 MiB."
+        "415":
+          "description": "Unsupported content type."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unsupported content type."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_415"
+                  "message": "Unsupported content type."
+        "500":
+          "description": "Unexpected internal sandbox error."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unexpected internal sandbox error."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_500"
+                  "message": "Unexpected internal sandbox error."
+        "503":
+          "description": "Sandbox dependency unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox dependency unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_503"
+                  "message": "Sandbox dependency unavailable."
+  "/actions/{id}/execute":
+    "post":
+      "summary": "Execute a confirmed action once"
+      "description": "Execute a confirmed action once. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites."
+      "operationId": "executeAction"
+      "tags":
+        - "Actions"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "required": true
+          "description": "Action identifier returned by POST /commands."
+          "schema":
+            "type": "string"
+            "example": "action_0001"
+        -
+          "name": "X-Sandbox-Failure"
+          "in": "header"
+          "required": false
+          "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients."
+          "schema":
+            "type": "string"
+            "enum":
+              - "403"
+              - "500"
+              - "503"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/VersionRequest"
+            "example":
+              "session_id": "session_anu_01"
+              "payload_version": 1
+      "responses":
+        "200":
+          "description": "Successful operation."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/ActionResponse"
+              "example":
+                "status": "succeeded"
+                "user_message": "Sandbox action succeeded."
+                "correlation_id": "corr_sandbox_0003"
+                "action_id": "action_0001"
+                "payload_version": 1
+                "provider_resource_id": "sandbox_event_action_0001"
+        "400":
+          "description": "Malformed or invalid request."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Malformed or invalid request."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_400"
+                  "message": "Malformed or invalid request."
+        "401":
+          "description": "Missing or invalid sandbox bearer token."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Missing or invalid sandbox bearer token."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_401"
+                  "message": "Missing or invalid sandbox bearer token."
+        "403":
+          "description": "Sandbox provider permission is unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox provider permission is unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_403"
+                  "message": "Sandbox provider permission is unavailable."
+        "404":
+          "description": "Resource or session action not found."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Resource or session action not found."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_404"
+                  "message": "Resource or session action not found."
+        "409":
+          "description": "Action version or confirmation conflicts."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Action version or confirmation conflicts."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_409"
+                  "message": "Action version or confirmation conflicts."
+        "413":
+          "description": "Request exceeds 2 MiB."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Request exceeds 2 MiB."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_413"
+                  "message": "Request exceeds 2 MiB."
+        "415":
+          "description": "Unsupported content type."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unsupported content type."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_415"
+                  "message": "Unsupported content type."
+        "500":
+          "description": "Unexpected internal sandbox error."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unexpected internal sandbox error."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_500"
+                  "message": "Unexpected internal sandbox error."
+        "503":
+          "description": "Sandbox dependency unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox dependency unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_503"
+                  "message": "Sandbox dependency unavailable."
+  "/contacts/search":
+    "post":
+      "summary": "Search sandbox contacts without a write"
+      "description": "Search sandbox contacts without a write. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites."
+      "operationId": "searchContacts"
+      "tags":
+        - "Contacts"
+      "parameters":
+        -
+          "name": "X-Sandbox-Failure"
+          "in": "header"
+          "required": false
+          "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients."
+          "schema":
+            "type": "string"
+            "enum":
+              - "403"
+              - "500"
+              - "503"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/ContactQuery"
+            "example":
+              "query": "Anu"
+      "responses":
+        "200":
+          "description": "Successful operation."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/ContactsResponse"
+              "example":
+                "status": "succeeded"
+                "user_message": "Sandbox contacts searched."
+                "correlation_id": "corr_sandbox_0004"
+                "contacts":
+                  -
+                    "name": "Anu"
+                    "email": "anu@example.org"
+        "400":
+          "description": "Malformed or invalid request."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Malformed or invalid request."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_400"
+                  "message": "Malformed or invalid request."
+        "401":
+          "description": "Missing or invalid sandbox bearer token."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Missing or invalid sandbox bearer token."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_401"
+                  "message": "Missing or invalid sandbox bearer token."
+        "403":
+          "description": "Sandbox provider permission is unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox provider permission is unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_403"
+                  "message": "Sandbox provider permission is unavailable."
+        "404":
+          "description": "Resource or session action not found."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Resource or session action not found."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_404"
+                  "message": "Resource or session action not found."
+        "409":
+          "description": "Action version or confirmation conflicts."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Action version or confirmation conflicts."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_409"
+                  "message": "Action version or confirmation conflicts."
+        "413":
+          "description": "Request exceeds 2 MiB."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Request exceeds 2 MiB."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_413"
+                  "message": "Request exceeds 2 MiB."
+        "415":
+          "description": "Unsupported content type."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unsupported content type."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_415"
+                  "message": "Unsupported content type."
+        "500":
+          "description": "Unexpected internal sandbox error."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unexpected internal sandbox error."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_500"
+                  "message": "Unexpected internal sandbox error."
+        "503":
+          "description": "Sandbox dependency unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox dependency unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_503"
+                  "message": "Sandbox dependency unavailable."
+  "/sessions/history":
+    "post":
+      "summary": "Read the current session action history"
+      "description": "Read the current session action history. Uses the documented sandbox bearer token; no real provider side effects. See README for sample prerequisites."
+      "operationId": "readHistory"
+      "tags":
+        - "History"
+      "parameters":
+        -
+          "name": "X-Sandbox-Failure"
+          "in": "header"
+          "required": false
+          "description": "LOCAL SANDBOX ONLY: force a documented error to exercise clients."
+          "schema":
+            "type": "string"
+            "enum":
+              - "403"
+              - "500"
+              - "503"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/HistoryRequest"
+            "example":
+              "session_id": "session_anu_01"
+      "responses":
+        "200":
+          "description": "Successful operation."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/HistoryResponse"
+              "example":
+                "status": "succeeded"
+                "user_message": "Sandbox session history retrieved."
+                "correlation_id": "corr_sandbox_0005"
+                "items":
+                  -
+                    "action_id": "action_0001"
+                    "type": "calendar.create"
+                    "status": "succeeded"
+                    "occurred_at": "2026-10-05T13:05:24.762612Z"
+        "400":
+          "description": "Malformed or invalid request."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Malformed or invalid request."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_400"
+                  "message": "Malformed or invalid request."
+        "401":
+          "description": "Missing or invalid sandbox bearer token."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Missing or invalid sandbox bearer token."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_401"
+                  "message": "Missing or invalid sandbox bearer token."
+        "403":
+          "description": "Sandbox provider permission is unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox provider permission is unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_403"
+                  "message": "Sandbox provider permission is unavailable."
+        "404":
+          "description": "Resource or session action not found."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Resource or session action not found."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_404"
+                  "message": "Resource or session action not found."
+        "409":
+          "description": "Action version or confirmation conflicts."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Action version or confirmation conflicts."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_409"
+                  "message": "Action version or confirmation conflicts."
+        "413":
+          "description": "Request exceeds 2 MiB."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Request exceeds 2 MiB."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_413"
+                  "message": "Request exceeds 2 MiB."
+        "415":
+          "description": "Unsupported content type."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unsupported content type."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_415"
+                  "message": "Unsupported content type."
+        "500":
+          "description": "Unexpected internal sandbox error."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Unexpected internal sandbox error."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_500"
+                  "message": "Unexpected internal sandbox error."
+        "503":
+          "description": "Sandbox dependency unavailable."
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Error"
+              "example":
+                "status": "error"
+                "user_message": "Sandbox dependency unavailable."
+                "correlation_id": "corr_sandbox_0001"
+                "error":
+                  "code": "http_503"
+                  "message": "Sandbox dependency unavailable."
+"components":
+  "securitySchemes":
+    "SandboxBearer":
+      "type": "http"
+      "scheme": "bearer"
+      "description": "Opaque sandbox token: sprint05-local-sandbox. Not a JWT. Production requires a verified app session; provider OAuth tokens remain server-side."
+  "schemas":
+    "Error":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "status"
+        - "user_message"
+        - "correlation_id"
+        - "error"
+      "properties":
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "user_message":
+          "type": "string"
+          "example": "Sandbox operation completed."
+        "correlation_id":
+          "type": "string"
+          "example": "corr_sandbox_0001"
+        "error":
+          "type": "object"
+          "additionalProperties": false
+          "required":
+            - "code"
+            - "message"
+          "properties":
+            "code":
+              "type": "string"
+              "example": "invalid_request"
+            "message":
+              "type": "string"
+              "example": "Review the request fields."
+    "Event":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "title"
+        - "start"
+        - "end"
+        - "timezone"
+      "properties":
+        "title":
+          "type": "string"
+          "example": "Sprint 05 review"
+          "minLength": 1
+        "start":
+          "type": "string"
+          "example": "2026-10-06T10:00:00+08:00"
+          "format": "date-time"
+        "end":
+          "type": "string"
+          "example": "2026-10-06T10:30:00+08:00"
+          "format": "date-time"
+        "timezone":
+          "type": "string"
+          "example": "Asia/Ulaanbaatar"
+          "enum":
+            - "Asia/Ulaanbaatar"
+    "CommandRequest":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "session_id"
+        - "transcript"
+        - "intent"
+        - "event"
+      "properties":
+        "session_id":
+          "type": "string"
+          "example": "session_anu_01"
+          "minLength": 1
+        "transcript":
+          "type": "string"
+          "example": "Schedule the Sprint 05 review on 6 October at 10 AM."
+          "minLength": 1
+        "intent":
+          "type": "string"
+          "example": "calendar.create"
+          "enum":
+            - "calendar.create"
+        "event":
+          "$ref": "#/components/schemas/Event"
+      "example":
+        "session_id": "session_anu_01"
+        "transcript": "Schedule the Sprint 05 review on 6 October at 10 AM."
+        "intent": "calendar.create"
+        "event":
+          "title": "Sprint 05 review"
+          "start": "2026-10-06T10:00:00+08:00"
+          "end": "2026-10-06T10:30:00+08:00"
+          "timezone": "Asia/Ulaanbaatar"
+    "VersionRequest":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "session_id"
+        - "payload_version"
+      "properties":
+        "session_id":
+          "type": "string"
+          "example": "session_anu_01"
+          "minLength": 1
+        "payload_version":
+          "type": "integer"
+          "minimum": 1
+          "example": 1
+      "example":
+        "session_id": "session_anu_01"
+        "payload_version": 1
+    "CommandResponse":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "status"
+        - "user_message"
+        - "correlation_id"
+        - "transcript"
+        - "intent"
+        - "action_id"
+        - "payload_version"
+        - "required_fields"
+        - "event"
+      "properties":
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "user_message":
+          "type": "string"
+          "example": "Sandbox operation completed."
+        "correlation_id":
+          "type": "string"
+          "example": "corr_sandbox_0001"
+        "transcript":
+          "type": "string"
+          "example": "Schedule the Sprint 05 review on 6 October at 10 AM."
+        "intent":
+          "type": "string"
+          "example": "calendar.create"
+        "action_id":
+          "type": "string"
+          "example": "action_0001"
+        "payload_version":
+          "type": "integer"
+          "example": 1
+        "required_fields":
+          "type": "array"
+          "items":
+            "type": "string"
+        "event":
+          "$ref": "#/components/schemas/Event"
+      "example":
+        "status": "proposed"
+        "user_message": "Review this action before confirming."
+        "correlation_id": "corr_sandbox_0001"
+        "transcript": "Schedule the Sprint 05 review on 6 October at 10 AM."
+        "intent": "calendar.create"
+        "action_id": "action_0001"
+        "payload_version": 1
+        "required_fields": []
+        "event":
+          "title": "Sprint 05 review"
+          "start": "2026-10-06T10:00:00+08:00"
+          "end": "2026-10-06T10:30:00+08:00"
+          "timezone": "Asia/Ulaanbaatar"
+    "ActionResponse":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "status"
+        - "user_message"
+        - "correlation_id"
+        - "action_id"
+        - "payload_version"
+        - "provider_resource_id"
+      "properties":
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "user_message":
+          "type": "string"
+          "example": "Sandbox operation completed."
+        "correlation_id":
+          "type": "string"
+          "example": "corr_sandbox_0001"
+        "action_id":
+          "type": "string"
+          "example": "action_0001"
+        "payload_version":
+          "type": "integer"
+          "example": 1
+        "provider_resource_id":
+          "type": "string"
+          "example": "sandbox_event_action_0001"
+      "example":
+        "status": "succeeded"
+        "user_message": "Sandbox action succeeded."
+        "correlation_id": "corr_sandbox_0003"
+        "action_id": "action_0001"
+        "payload_version": 1
+        "provider_resource_id": "sandbox_event_action_0001"
+    "ContactQuery":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "query"
+      "properties":
+        "query":
+          "type": "string"
+          "example": "Anu"
+          "minLength": 1
+      "example":
+        "query": "Anu"
+    "Contact":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "name"
+        - "email"
+      "properties":
+        "name":
+          "type": "string"
+          "example": "Anu"
+        "email":
+          "type": "string"
+          "example": "anu@example.org"
+          "format": "email"
+    "ContactsResponse":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "status"
+        - "user_message"
+        - "correlation_id"
+        - "contacts"
+      "properties":
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "user_message":
+          "type": "string"
+          "example": "Sandbox operation completed."
+        "correlation_id":
+          "type": "string"
+          "example": "corr_sandbox_0001"
+        "contacts":
+          "type": "array"
+          "items":
+            "$ref": "#/components/schemas/Contact"
+      "example":
+        "status": "succeeded"
+        "user_message": "Sandbox contacts searched."
+        "correlation_id": "corr_sandbox_0004"
+        "contacts":
+          -
+            "name": "Anu"
+            "email": "anu@example.org"
+    "HistoryRequest":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "session_id"
+      "properties":
+        "session_id":
+          "type": "string"
+          "example": "session_anu_01"
+          "minLength": 1
+      "example":
+        "session_id": "session_anu_01"
+    "HistoryEntry":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "action_id"
+        - "type"
+        - "status"
+        - "occurred_at"
+      "properties":
+        "action_id":
+          "type": "string"
+          "example": "action_0001"
+        "type":
+          "type": "string"
+          "example": "calendar.create"
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "occurred_at":
+          "type": "string"
+          "example": "2026-10-05T00:00:00Z"
+          "format": "date-time"
+    "HistoryResponse":
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "status"
+        - "user_message"
+        - "correlation_id"
+        - "items"
+      "properties":
+        "status":
+          "type": "string"
+          "example": "succeeded"
+        "user_message":
+          "type": "string"
+          "example": "Sandbox operation completed."
+        "correlation_id":
+          "type": "string"
+          "example": "corr_sandbox_0001"
+        "items":
+          "type": "array"
+          "items":
+            "$ref": "#/components/schemas/HistoryEntry"
+      "example":
+        "status": "succeeded"
+        "user_message": "Sandbox session history retrieved."
+        "correlation_id": "corr_sandbox_0005"
+        "items":
+          -
+            "action_id": "action_0001"
+            "type": "calendar.create"
+            "status": "succeeded"
+            "occurred_at": "2026-10-05T13:05:24.762612Z"

@@ -1,0 +1,111 @@
+{
+  "assistant_workflow.py": [
+    {
+      "http_status": 200,
+      "body": {
+        "status": "proposed",
+        "user_message": "Review this action before confirming.",
+        "correlation_id": "corr_sandbox_0001",
+        "transcript": "Schedule the Sprint 05 review on 6 October at 10 AM.",
+        "intent": "calendar.create",
+        "action_id": "action_0001",
+        "payload_version": 1,
+        "required_fields": [],
+        "event": {
+          "title": "Sprint 05 review",
+          "start": "2026-10-06T10:00:00+08:00",
+          "end": "2026-10-06T10:30:00+08:00",
+          "timezone": "Asia/Ulaanbaatar"
+        }
+      }
+    },
+    {
+      "http_status": 200,
+      "body": {
+        "status": "confirmed",
+        "user_message": "Sandbox action confirmed.",
+        "correlation_id": "corr_sandbox_0002",
+        "action_id": "action_0001",
+        "payload_version": 1,
+        "provider_resource_id": ""
+      }
+    },
+    {
+      "http_status": 200,
+      "body": {
+        "status": "succeeded",
+        "user_message": "Sandbox action succeeded.",
+        "correlation_id": "corr_sandbox_0003",
+        "action_id": "action_0001",
+        "payload_version": 1,
+        "provider_resource_id": "sandbox_event_action_0001"
+      }
+    },
+    {
+      "http_status": 200,
+      "body": {
+        "status": "succeeded",
+        "user_message": "Sandbox contacts searched.",
+        "correlation_id": "corr_sandbox_0004",
+        "contacts": [
+          {
+            "name": "Anu",
+            "email": "anu@example.org"
+          }
+        ]
+      }
+    },
+    {
+      "http_status": 200,
+      "body": {
+        "status": "succeeded",
+        "user_message": "Sandbox session history retrieved.",
+        "correlation_id": "corr_sandbox_0005",
+        "items": [
+          {
+            "action_id": "action_0001",
+            "type": "calendar.create",
+            "status": "succeeded",
+            "occurred_at": "2026-10-05T13:05:24.762612Z"
+          }
+        ]
+      }
+    }
+  ],
+  "upload_photo.py": [
+    {
+      "http_status": 200,
+      "body": {
+        "pet_id": "corgi_98231",
+        "photo_id": "photo_0001",
+        "filename": "einstein.png",
+        "bytes_received": 68
+      }
+    }
+  ],
+  "translate_bark.py": [
+    {
+      "http_status": 200,
+      "body": {
+        "pet_id": "corgi_98231",
+        "meaning": "I want to play.",
+        "confidence": 0.92,
+        "simulated": true
+      }
+    }
+  ],
+  "subscribe_webhook.py": [
+    {
+      "http_status": 201,
+      "body": {
+        "subscription_id": "subscription_0001",
+        "pet_id": "corgi_98231",
+        "callback_url": "https://example.org/corgly/pet-activity",
+        "events": [
+          "pet.activity.detected"
+        ],
+        "status": "active"
+      }
+    }
+  ]
+}
