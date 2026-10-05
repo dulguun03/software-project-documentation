@@ -1,0 +1,13 @@
+{
+  "name": "sprint05-voice-assistant-docs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "redocly lint docs/openapi/openapi.yaml docs/openapi/corgly.yaml",
+    "build": "node scripts/build-docs.mjs"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.58.0",
+    "swagger-ui-dist": "5.33.1"
+  }
+}
